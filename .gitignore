@@ -1,0 +1,9 @@
+build/*
+**/target/*
+.cache/.cargo/*
+dependencies/*
+!.gitkeep
+Cargo.lock
+/cli/proofs_files
+/cli/trusted_setup
+.cargo/config
