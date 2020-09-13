@@ -25,8 +25,8 @@ use poly_commit::kzg10::*;
 
 use std::mem;
 
-const MIMC_ROUNDS: usize = 10;
-const SAMPLES: usize =  16380;//1048576//131070;//1048570;//131070;//16380;//16380;//16384
+const MIMC_ROUNDS: usize = 25;
+const SAMPLES: usize =  131070;//1048576//131070;//1048570;//131070;//16380;//16380;//16384
 
 /// This is an implementation of MiMC, specifically a
 /// variant named `LongsightF322p3` for BN-256.

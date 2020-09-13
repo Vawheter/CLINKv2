@@ -326,14 +326,15 @@ impl<E: PairingEngine> ProvingAssignment<E> {
         let mut c = [0u8; 31];
         transcript.challenge_bytes(b"opening challenge", &mut c);
         let opening_challenge = E::Fr::from_random_bytes(&c).unwrap();
+        let eta = E::Fr::from_random_bytes(&c).unwrap();
 
 
         // Compute and commit quotient polynomials
         let m_abc = self.at.len();
-        let mut q_polys = vec![];
-        let mut q_comms = vec![];
-        let mut q_values = vec![];
-        let mut q_rands = vec![];
+        // let mut q_polys = vec![];
+        // let mut q_comms = vec![];
+        // let mut q_values = vec![];
+        // let mut q_rands = vec![];
 
         // for i in 0..self.at.len() {
         //     println!("at[{:?}]: {:?}", i, &self.at[i]);
@@ -387,11 +388,18 @@ impl<E: PairingEngine> ProvingAssignment<E> {
         //     }
         // }
 
-        let mut qi_commit_time = Duration::new(0, 0);
+        let mut q_commit_time = Duration::new(0, 0);
         // let mut rj_lc_time = Duration::new(0, 0);
 
-        let mut qi_4fft_time = Duration::new(0, 0);
+        let mut abci_fft_time = Duration::new(0, 0);
 
+        // let mut ab_c_poly = DensePolynomial::from_coefficients_vec(vec![zero; domain_size]);
+        let mut ab_c_coeffs = vec![zero; domain_size];
+        // println!("domain_size:{}", domain_size);
+
+        let start = Instant::now();
+
+        let mut mul = one;
 
         for i in 0..m_abc {
 
@@ -448,38 +456,66 @@ impl<E: PairingEngine> ProvingAssignment<E> {
             // let b = bi.evaluate(alpha);
             // let c = ci.evaluate(alpha);
 
-            let start = Instant::now();
-
             domain.coset_fft_in_place(&mut ai.coeffs);
             domain.coset_fft_in_place(&mut bi.coeffs);
             domain.coset_fft_in_place(&mut ci.coeffs);
 
             let mut abi = domain.mul_polynomials_in_evaluation_domain(&ai, &bi);
 
+            // println!("ai.coeffs.len():{}", &ai.coeffs.len());
+
+            // println!("abi: {:?}", abi);
+            // println!("ci: {:?}", ci.coeffs);
+
+
             drop(ai);
             drop(bi);
 
             cfg_iter_mut!(abi)
                 .zip(ci.coeffs)
-                .for_each(|(abij, cij)| *abij -= &cij);
-            
-            domain.divide_by_vanishing_poly_on_coset_in_place(&mut abi);
-            domain.coset_ifft_in_place(&mut abi);
+                .zip(&mut ab_c_coeffs)
+                .for_each(|((abij, cij), ab_c_j)| *ab_c_j += &(mul * &(*abij - &cij)));
 
-            qi_4fft_time += start.elapsed();
+            // cfg_iter_mut!(abi)
+            //     .zip(ci.coeffs)
+            //     .for_each(|(abij, cij)| *abij -= &cij);
 
-            let qi_poly = DensePolynomial::from_coefficients_vec(abi);
+            // let eta_mul_poly = DensePolynomial::from_coefficients_vec(vec![mul; 1]);
+            // ab_c_poly += &(&eta_mul_poly * &DensePolynomial::from_coefficients_vec(abi));
 
-            //let q = qi_poly.evaluate(alpha);
+            mul = mul * &eta;
+        
+        }
 
-            // Commit to quotient polynomial
-            //let qi_poly = Polynomial::from_coefficients_slice(&abi[..]);
-            let start2 = Instant::now();
-            let (qi_comm, qi_rand) = KZG10::<E>::commit(&kzg10_ck, &qi_poly, hiding_bound, Some(&mut rng))?;
-            qi_commit_time += start2.elapsed();
-            q_comms.push(qi_comm);
-            q_rands.push(qi_rand);
-            q_polys.push(qi_poly);
+        // println!("ab_c_coeffs: {:?}", ab_c_coeffs);
+
+        let mut ab_c_poly = DensePolynomial::from_coefficients_vec(ab_c_coeffs);
+
+        domain.divide_by_vanishing_poly_on_coset_in_place(&mut ab_c_poly.coeffs);
+        // println!("ab_c_poly: {:?}", ab_c_poly.coeffs);
+
+        domain.coset_ifft_in_place(&mut ab_c_poly.coeffs);
+
+        abci_fft_time += start.elapsed();
+
+        // println!("ab_c_poly: {:?}", ab_c_poly.coeffs);
+
+        let q_poly = ab_c_poly;
+        // println!("q_poly: {:?}", q_poly.coeffs);
+
+        //let q = qi_poly.evaluate(alpha);
+
+        // Commit to quotient polynomial
+        //let qi_poly = Polynomial::from_coefficients_slice(&abi[..]);
+        let start2 = Instant::now();
+
+        let (q_comm, q_rand) = KZG10::<E>::commit(&kzg10_ck, &q_poly, hiding_bound, Some(&mut rng))?;
+
+        q_commit_time += start2.elapsed();
+
+        // q_comms.push(qi_comm);
+        // q_rands.push(qi_rand);
+        // q_polys.push(qi_poly);
 
             //let vanishing_poly = domain.vanishing_polynomial();
             //let t = vanishing_poly.evaluate(alpha);
@@ -487,21 +523,21 @@ impl<E: PairingEngine> ProvingAssignment<E> {
             //println!("verifying q[{:?}](x): {:?}", i, &q_polys[i]);
             //assert_eq!(a * &b - &c, q * &t);
 
-        }
+        
         // let qi_4fft_commit_time =
         // qi_4fft_commit_time.subsec_nanos() as f64 / 1_000_000_000f64 + (qi_4fft_commit_time.as_secs() as f64);
-        println!("qi_4fft_time: {:?}", qi_4fft_time);
+        println!("abci_fft_time: {:?}", abci_fft_time);
 
         // let rj_lc_time =
         // rj_lc_time.subsec_nanos() as f64 / 1_000_000_000f64 + (rj_lc_time.as_secs() as f64);
         // println!("rj_lc_time: {:?}", rj_lc_time);
 
-        // let qi_commit_time =
-        // qi_commit_time.subsec_nanos() as f64 / 1_000_000_000f64 + (qi_commit_time.as_secs() as f64);
-        println!("qi_commit_time: {:?}", qi_commit_time);
+        // let q_commit_time =
+        // q_commit_time.subsec_nanos() as f64 / 1_000_000_000f64 + (q_commit_time.as_secs() as f64);
+        println!("q_commit_time: {:?}", q_commit_time);
         //println!("qi_fft_time: {:?}", qi_4fft_commit_time - qi_4fft_commit_time);
 
-        transcript.append_message(b"quotient polynomial commitments", as_bytes(&q_comms));
+        transcript.append_message(b"quotient polynomial commitments", as_bytes(&q_comm));
 
         // Prove
 
@@ -547,21 +583,23 @@ impl<E: PairingEngine> ProvingAssignment<E> {
         println!("open_r_mid_time: {:?}", open_r_mid_time);
 
 
-        let mut open_qi_time = Duration::new(0, 0);
+        let mut open_q_time = Duration::new(0, 0);
         let start = Instant::now();
 
-        for i in 0..m_abc {
-            let qi_value = q_polys[i].evaluate(zeta);
-            // let qi_proof = KZG10::<E>::open(&kzg10_ck, &qi_poly, zeta, &q_rands[i])?;
-            q_values.push(qi_value);
-            // q_combined_proof.push(qi_proof);
-        }
+        // for i in 0..m_abc {
+        //     let qi_value = q_polys[i].evaluate(zeta);
+        //     // let qi_proof = KZG10::<E>::open(&kzg10_ck, &qi_poly, zeta, &q_rands[i])?;
+        //     q_values.push(qi_value);
+        //     // q_combined_proof.push(qi_proof);
+        // }
 
-        let q_combined_proof = KZG10::<E>::batch_open(&kzg10_ck, &q_polys, zeta, opening_challenge, &q_rands)?;
+        let q_value = q_poly.evaluate(zeta);
+
+        let q_proof = KZG10::<E>::open(&kzg10_ck, &q_poly, zeta, &q_rand)?;
 
 
-        open_qi_time += start.elapsed();
-        println!("open_qi_time: {:?}", open_qi_time);
+        open_q_time += start.elapsed();
+        println!("open_q_time: {:?}", open_q_time);
 
 
         // let mut io:Vec<Vec<E::Fr>> = vec![];
@@ -576,9 +614,9 @@ impl<E: PairingEngine> ProvingAssignment<E> {
         let proof_size = mem::size_of_val(&*r_mid_comms) 
                         + mem::size_of_val(&*r_mid_values)
                         + mem::size_of_val(&r_mid_combined_proof)
-                        + mem::size_of_val(&*q_comms)
-                        + mem::size_of_val(&*q_values)
-                        + mem::size_of_val(&q_combined_proof)
+                        + mem::size_of_val(&q_comm)
+                        + mem::size_of_val(&q_value)
+                        + mem::size_of_val(&q_proof)
                         + mem::size_of_val(&opening_challenge);
         println!("{:?}", proof_size);
         
@@ -586,9 +624,9 @@ impl<E: PairingEngine> ProvingAssignment<E> {
             r_mid_comms,
             r_mid_values,
             r_mid_combined_proof,
-            q_comms,
-            q_values,
-            q_combined_proof,
+            q_comm,
+            q_value,
+            q_proof,
             opening_challenge,
          };
         // println!("size_of_val(proof.r_mid_comms): {:?}", mem::size_of_val(&proof.r_mid_comms));
@@ -613,8 +651,9 @@ impl<E: PairingEngine> ProvingAssignment<E> {
         let mut c = [0u8; 31];
         transcript.challenge_bytes(b"opening challenge", &mut c);
         let opening_challenge = E::Fr::from_random_bytes(&c).unwrap();
+        let eta = E::Fr::from_random_bytes(&c).unwrap();
 
-        transcript.append_message(b"quotient polynomial commitments", as_bytes(&proof.q_comms));
+        transcript.append_message(b"quotient polynomial commitments", as_bytes(&proof.q_comm));
         c = [0u8; 31];
         transcript.challenge_bytes(b"random point", &mut c);
         let zeta = E::Fr::from_random_bytes(&c).unwrap();
@@ -622,7 +661,7 @@ impl<E: PairingEngine> ProvingAssignment<E> {
         // println!("opening challenge: {:?}", opening_challenge);
         // println!("zeta: {:?}", zeta);
         
-
+        let one = E::Fr::one();
 
         let m_io = io.len();
         let m = m_io + proof.r_mid_values.len();
@@ -634,7 +673,7 @@ impl<E: PairingEngine> ProvingAssignment<E> {
         assert!(KZG10::<E>::batch_check(&kzg10_vk, &proof.r_mid_comms, zeta, &proof.r_mid_values, &proof.r_mid_combined_proof, opening_challenge)?);
         
         //points = vec![zeta; proof.q_comms.len()];
-        assert!(KZG10::<E>::batch_check(&kzg10_vk, &proof.q_comms, zeta, &proof.q_values, &proof.q_combined_proof, opening_challenge)?);
+        assert!(KZG10::<E>::check(&kzg10_vk, &proof.q_comm, zeta, proof.q_value, &proof.q_proof)?);
 
 
         let domain = EvaluationDomain::<E::Fr>::new(n)
@@ -673,6 +712,11 @@ impl<E: PairingEngine> ProvingAssignment<E> {
         let zero = E::Fr::zero();
 
         let m_abc = self.at.len();
+
+        let mut ab_c = zero;
+
+        let mut mul = one;
+
         for i in 0..m_abc {
 
             let mut ai = zero;
@@ -699,9 +743,12 @@ impl<E: PairingEngine> ProvingAssignment<E> {
                     Index::Aux(j) => ci += &(proof.r_mid_values[*j] * coeff),
                 };
             }
-            
-            assert_eq!(ai * &bi - &ci, proof.q_values[i] * &vanishing_value);
+
+            ab_c += &(mul * &(ai * &bi - &ci));
+            mul = mul * &eta;
         }
+
+        assert_eq!(ab_c, proof.q_value * &vanishing_value);
 
         Ok(true)
     }
