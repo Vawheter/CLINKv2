@@ -42,12 +42,9 @@ pub struct Proof<E: PairingEngine> {
     //pub io: Vec<Vec<E::Fr>>,
 
     pub r_mid_comms: Vec<KZG10_Comm<E>>,
-    pub r_mid_values: Vec<E::Fr>,
-    pub r_mid_combined_proof: KZG10_Proof<E>,
-
     pub q_comm: KZG10_Comm<E>,
-    pub q_value: E::Fr,
-    pub q_proof: KZG10_Proof<E>,
+    pub r_mid_q_values: Vec<E::Fr>,
+    pub r_mid_q_proof: KZG10_Proof<E>,
     opening_challenge: E::Fr,
 }
 

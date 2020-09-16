@@ -161,8 +161,6 @@ where
     let h = R1CStoQAP::witness_map::<E>(&prover)?;
 
     h_ifft_time += start.elapsed();
-    // let h_ifft_time =
-    // h_ifft_time.subsec_nanos() as f64 / 1_000_000_000f64 + (h_ifft_time.as_secs() as f64);
     println!("h_ifft_time: {:?}", h_ifft_time);
 
 
