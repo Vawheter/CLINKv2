@@ -37,6 +37,9 @@ bulletproofs = ["scheme/bulletproofs"]
 test_groth16 = ["scheme/test_groth16"]
 test_bulletproof = ["scheme/test_bulletproofs"]
 test_clinkv2 = ["scheme/test_clinkv2"]
+mimc = ["scheme/mimc"]
+rescue = ["scheme/rescue"]
+poseidon = ["scheme/poseidon"]
 
 [dependencies]
 math = { path = "math", default-features = false }

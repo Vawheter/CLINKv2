@@ -20,7 +20,7 @@
 // // We'll use these interfaces to construct our circuit.
 // use scheme::r1cs::{ConstraintSynthesizer, ConstraintSystem, SynthesisError};
 
-// const MIMC_ROUNDS: usize = 25;
+// const MIMC_ROUNDS: usize = 5;
 // const SAMPLES: usize = 16380;//131070;//16777210;//131070;//1048570;//131070;//16380;//1048574;
 
 // /// This is an implementation of MiMC, specifically a

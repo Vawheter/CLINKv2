@@ -183,7 +183,7 @@ impl<G: AffineCurve, D: Digest> InnerProductArgPC<G, D> {
         supported_degree: usize,
         p: &LabeledPolynomial<G::ScalarField>,
     ) -> Result<(), Error> {
-        if p.degree() < 1 {
+        if p.degree() < 0 { //1 {
             return Err(Error::DegreeIsZero);
         } else if p.degree() > supported_degree {
             return Err(Error::TooManyCoefficients {

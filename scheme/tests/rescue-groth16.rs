@@ -1,6 +1,8 @@
+// The following code refers to Marvellous [https://github.com/KULeuven-COSIC/Marvellous] and Distaff [https://github.com/GuildOfWeavers/distaff]
+// and thanks for their work
+// @Author: JiadongLu 
 #![allow(unused_imports)]
-#![allow(dead_code)]
-#![allow(unused_must_use)]
+#![allow(non_camel_case_types)]
 
 // For randomness (during paramgen and proof generation)
 use rand::Rng;
@@ -8,41 +10,19 @@ use rand::Rng;
 // For benchmarking
 use std::time::{Duration, Instant};
 
-use math::One;
-
 // Bring in some tools for using pairing-friendly curves
 use curve::bn_256::{Bn_256, Fr};
-use math::{test_rng, Field, PrimeField, BitIterator};
+use math::{test_rng, BitIterator, PrimeField};
+
+use std::mem;
 
 // We're going to use the BN-256 pairing-friendly elliptic curve.
 
 // We'll use these interfaces to construct our circuit.
-use scheme::clinkv2::r1cs::{Variable, ConstraintSynthesizer, ConstraintSystem, SynthesisError};
-use scheme::clinkv2::prover::{ProvingAssignment};
+use scheme::r1cs::{ConstraintSynthesizer, ConstraintSystem, SynthesisError, Variable};
 
-use poly_commit::kzg10;
-use poly_commit::kzg10::*;
-
-use std::mem;
-
-// const MIMC_ROUNDS: usize = 2;
 const N: usize = 2; // round number
 const SAMPLES: usize =  4095;//31070;//1048576//131070;//1048570;//131070;//16380;//16380;//16384
-
-/// This is an implementation of MiMC, specifically a
-/// variant named `LongsightF322p3` for BN-256.
-/// See http://eprint.iacr.org/2016/492 for more
-/// information about this construction.
-///
-/// ```
-/// function LongsightF322p3(xL ⦂ Fp, xR ⦂ Fp) {
-///     for i from 0 up to 321 {
-///         xL, xR := xR + (xL + Ci)^3, xL
-///     }
-///     return xL
-/// }
-/// ```
-
 
 // Hash Rescue utilizes Sponge Construction
 // r, bitrate; c, capacity; M, state value, equal to r + c;
@@ -132,7 +112,7 @@ pub fn block_cipher<F> (state: &mut[F], rc: &RescueConstant<F>) where F: PrimeFi
             state[j] = state[j].pow(af);
         }
         // matrix multiplication
-        let mut tmp2 = [F::one(); M];
+        let mut tmp2 = [F::zero(); M];
         for j in 0..M {
             for k in 0..M {
                 let mut t2 = rc.mds[j][k];
@@ -149,7 +129,7 @@ pub fn block_cipher<F> (state: &mut[F], rc: &RescueConstant<F>) where F: PrimeFi
 }
 
 pub fn rescue_hash<F: PrimeField>(xl: F, xr: F, constants: &RescueConstant<F>) -> F {
-    let mut state = [xl, xr, F::one()];
+    let mut state = [xl, xr, F::zero()];
     block_cipher(&mut state, &constants);
 
     // c == 1
@@ -320,172 +300,158 @@ const _CONSTANTS_CONSTANT:[[&str;3];45] = [
 /// This is our demo circuit for proving knowledge of the
 /// preimage of a Rescue hash invocation.
 
-pub struct RescueDemo<'a, F: PrimeField> {
-  pub xl: Option<F>,
-  pub xr: Option<F>,
+pub struct N_RescueDemo<'a, F: PrimeField> {
+//   pub xl: Option<F>,
+//   pub xr: Option<F>,
   pub constants: &'a RescueConstant<F>,
+  pub n: usize,
 }
 
 
 /// Our demo circuit implements this `Circuit` trait which
 /// is used during paramgen and proving in order to
 /// synthesize the constraint system.
-impl<'a, F: PrimeField> ConstraintSynthesizer<F> for RescueDemo<'a, F> {
+impl<'a, F: PrimeField> ConstraintSynthesizer<F> for N_RescueDemo<'a, F> {
   fn generate_constraints<CS: ConstraintSystem<F>>(
     self,
     cs: &mut CS,
-    index: usize,
   ) -> Result<(), SynthesisError> {
 
-    cs.alloc_input(|| "", || Ok(F::one()), index)?;
+    let mut rng = &mut test_rng();
+    for _ in 0..self.n {
+        let xl_0: F = F::rand(&mut rng);
+        let xr_0: F = F::rand(&mut rng);
+        //let image = mimc(xl, xr, &constants);
 
-    let xl_value = self.xl;
-    let xl = cs.alloc(
-      || "preimage xl",
-      || xl_value.ok_or(SynthesisError::AssignmentMissing),
-      index,
-    )?;
-
-    let xr_value = self.xr;
-    let xr = cs.alloc(
-      || "preimage xl",
-      || xr_value.ok_or(SynthesisError::AssignmentMissing),
-      index,
-    )?;
-
-    let three_value: Option<F> = Some(F::one());
-    let three = cs.alloc(
-        || "preimage tmpf",
-        || three_value.ok_or(SynthesisError::AssignmentMissing),
-        index,
-    )?;
-
-    let mut state_value = [xl_value, xr_value, three_value];
-    let mut state = [xl, xr, three];
-    let cs = &mut cs.ns(|| format!("Preassign"));
-    
-    for i in 0..M {
-        let tmp_value = state_value[i].map(|mut e| {
-            e.add_assign(&self.constants.constants[0][i]);
-            e
-        });
-
-        let tmp = cs.alloc(
-            ||"tmp",
-            || tmp_value.ok_or(SynthesisError::AssignmentMissing),
-            index,
+        let xl_value = Some(xl_0);
+        let xl = cs.alloc(
+        || "preimage xl",
+        || xl_value.ok_or(SynthesisError::AssignmentMissing),
+        )?;
+        
+        let xr_value = Some(xr_0);
+        let xr = cs.alloc(
+        || "preimage xl",
+        || xr_value.ok_or(SynthesisError::AssignmentMissing),
         )?;
 
-        if index == 0 {
+        let three_value: Option<F> = Some(F::zero());
+        let three = cs.alloc(
+            || "preimage tmpf",
+            || three_value.ok_or(SynthesisError::AssignmentMissing),
+        )?;
+
+        let mut state_value = [xl_value, xr_value, three_value];
+        let mut state = [xl, xr, three];
+        let cs = &mut cs.ns(|| format!("Preassign"));
+        
+        for i in 0..M {
+            let tmp_value = state_value[i].map(|mut e| {
+                e.add_assign(&self.constants.constants[0][i]);
+                e
+            });
+
+            let tmp = cs.alloc(
+                ||"tmp",
+                || tmp_value.ok_or(SynthesisError::AssignmentMissing),
+            )?;
+
             cs.enforce(
                 || "tmp = (state[i] + Ci) * 1",
                 |lc| lc + state[i] + (self.constants.constants[0][i], CS::one()), 
                 |lc| lc + (F::one(), CS::one()),
                 |lc| lc + tmp,
             );
-        }
 
-        state_value[i] = tmp_value;
-        state[i] = tmp;
-
-    }
-   
-    let mut af: &[u64];
-    for i in 0..2 * N {
-        let cs = &mut cs.ns(|| format!("round {}", i));
-        af = &ALPH;
-        if i % 2 == 1 {
-            af = &INVALPH;
-        }
-
-
-        for j in 0..M {
-            let tuple = pow_with_constraint(&state_value[j], &state[j], af, cs, index)?;
-            state_value[j] = tuple.0;
-            state[j] = tuple.1;
-        }
-
-        let mut tmp2_value = [Some(F::one()); M];
-        let mut tmp2 = Vec::with_capacity(3);
-        for j in 0..M {
-            tmp2.push(cs.alloc(
-                ||"tmp2[j]",
-                || tmp2_value[j].ok_or(SynthesisError::AssignmentMissing),
-                index,
-            )?);
+            state_value[i] = tmp_value;
+            state[i] = tmp;
 
         }
+    
+        let mut af: &[u64];
+        for i in 0..2 * N {
+            let cs = &mut cs.ns(|| format!("round {}", i));
+            af = &ALPH;
+            if i % 2 == 1 {
+                af = &INVALPH;
+            }
 
-        for j in 0..M {
-            for k in 0..M {
-                let tmp3_value: Option<F> = Some(self.constants.mds[j][k]);
-                let tmp3 = cs.alloc(
-                    ||"tmp3",
-                    || tmp3_value.ok_or(SynthesisError::AssignmentMissing),
-                    index,
-                )?;
 
-                let new_tmp_value = tmp3_value.map(|mut e|{
-                    e.mul_assign(&state_value[k].unwrap());
-                    e.add_assign(&tmp2_value[j].unwrap());
-                    e
-                });
+            for j in 0..M {
+                let tuple = pow_with_constraint(&state_value[j], &state[j], af, cs)?;
+                state_value[j] = tuple.0;
+                state[j] = tuple.1;
+            }
 
-                let new_tmp = cs.alloc(
-                    ||"new tmp",
-                    || new_tmp_value.ok_or(SynthesisError::AssignmentMissing),
-                    index,
-                )?;
+            let mut tmp2_value = [Some(F::zero()); M];
+            let mut tmp2 = Vec::with_capacity(3);
+            for j in 0..M {
+                tmp2.push(cs.alloc(
+                    ||"tmp2[j]",
+                    || tmp2_value[j].ok_or(SynthesisError::AssignmentMissing),
+                )?);
 
-                if index == 0 {
+            }
+
+            for j in 0..M {
+                for k in 0..M {
+                    let tmp3_value: Option<F> = Some(self.constants.mds[j][k]);
+                    let tmp3 = cs.alloc(
+                        ||"tmp3",
+                        || tmp3_value.ok_or(SynthesisError::AssignmentMissing),
+                    )?;
+
+                    let new_tmp_value = tmp3_value.map(|mut e|{
+                        e.mul_assign(&state_value[k].unwrap());
+                        e.add_assign(&tmp2_value[j].unwrap());
+                        e
+                    });
+
+                    let new_tmp = cs.alloc(
+                        ||"new tmp",
+                        || new_tmp_value.ok_or(SynthesisError::AssignmentMissing),
+                    )?;
+
                     cs.enforce(
                         ||"new_tmp - tmp2[j] = tmp3_value * state_value[k]",
                         |lc| lc + tmp3,
                         |lc| lc + state[k],
                         |lc| lc + new_tmp - tmp2[j],
-                    );       
-                }  
-                
-                tmp2_value[j] = new_tmp_value;
-                tmp2[j] = new_tmp;
+                    );         
+                    
+                    tmp2_value[j] = new_tmp_value;
+                    tmp2[j] = new_tmp;
+                }
             }
-        }
-        for j in 0..M {
-            let tmp_value = tmp2_value[j].map(|mut e|{
-                e.add_assign(&self.constants.constants[i+1][j]);
-                e
-            });
+            for j in 0..M {
+                let tmp_value = tmp2_value[j].map(|mut e|{
+                    e.add_assign(&self.constants.constants[i+1][j]);
+                    e
+                });
 
-            let tmp = cs.alloc(
-                    ||"tmp",
-                    || tmp_value.ok_or(SynthesisError::AssignmentMissing),
-                    index,
-            )?;
+                let tmp = cs.alloc(
+                        ||"tmp",
+                        || tmp_value.ok_or(SynthesisError::AssignmentMissing),
+                )?;
 
-            if index == 0 {
                 cs.enforce(
                     ||"tmp = tmp2[j] + constants[i+1][j]", 
                     |lc| lc + tmp2[j] + (self.constants.constants[i+1][j], CS::one()), 
                     |lc| lc + (F::one(), CS::one()),
                     |lc| lc + tmp,
                 );
+
+                state[j] = tmp;
+                state_value[j] = tmp_value;
             }
 
-            state[j] = tmp;
-            state_value[j] = tmp_value;
         }
 
-    }
+        let tmp = cs.alloc(
+            ||"input ",
+            || state_value[0].ok_or(SynthesisError::AssignmentMissing),
+        )?;
 
-    let tmp = cs.alloc_input(
-        ||"input ",
-        || state_value[0].ok_or(SynthesisError::AssignmentMissing),
-        index,
-    )?;
-    // println!("state_value[0]: {:?}", &state_value[0]);
-    
-
-    if index == 0 {
         cs.enforce(
             ||"tmp = tmp2[j] + constants[i+1][j]", 
             |lc| lc + (F::one(), CS::one()), 
@@ -493,6 +459,7 @@ impl<'a, F: PrimeField> ConstraintSynthesizer<F> for RescueDemo<'a, F> {
             |lc| lc + tmp,
         );
     }
+
     Ok(())
   }
 }
@@ -502,17 +469,14 @@ fn pow_with_constraint<F: PrimeField, CS: ConstraintSystem<F>, S: AsRef<[u64]>> 
       state_value: &Option<F>,
       state: &Variable,
       exp: S,
-      cs: &mut CS,
-      index: usize,
+      cs: &mut CS
   ) -> Result<(Option<F>, Variable), SynthesisError> {
     let mut res_value: Option<F> = Some(F::one());
     
     let mut res = cs.alloc(
         ||"res", 
         || res_value.ok_or(SynthesisError::AssignmentMissing),
-        index,
     )?;
-
 
     let mut found_one = false;
     for i in BitIterator::new(exp) {
@@ -532,18 +496,14 @@ fn pow_with_constraint<F: PrimeField, CS: ConstraintSystem<F>, S: AsRef<[u64]>> 
         let tmp = cs.alloc(
             ||"tmp", 
             ||tmp_value.ok_or(SynthesisError::AssignmentMissing),
-            index,
         )?;
 
-
-        if index == 0 {
-            cs.enforce(
-                ||"tmp = res * res",
-                |lc| lc + res,
-                |lc| lc + res,
-                |lc| lc + tmp,
-            );
-        }
+        cs.enforce(
+            ||"tmp = res * res",
+            |lc| lc + res,
+            |lc| lc + res,
+            |lc| lc + tmp,
+        );
 
         res_value = tmp_value;
         res = tmp;
@@ -556,17 +516,14 @@ fn pow_with_constraint<F: PrimeField, CS: ConstraintSystem<F>, S: AsRef<[u64]>> 
             let tmp = cs.alloc(
                 ||"tmp", 
                 ||tmp_value.ok_or(SynthesisError::AssignmentMissing),
-                index,
             )?;
 
-            if index == 0 {
-                cs.enforce(
-                    ||"tmp = res * state",
-                    |lc| lc + res,
-                    |lc| lc + *state,
-                    |lc| lc + tmp,
-                );
-            }
+            cs.enforce(
+                ||"tmp = res * state",
+                |lc| lc + res,
+                |lc| lc + *state,
+                |lc| lc + tmp,
+            );
             res_value = tmp_value;
             res = tmp;
         }
@@ -576,121 +533,98 @@ fn pow_with_constraint<F: PrimeField, CS: ConstraintSystem<F>, S: AsRef<[u64]>> 
     Ok((res_value, res))
 } 
 
-
 #[test]
-fn rescue_clinkv2() {
-    let mut rng = &mut test_rng();
+fn rescue_groth_16() {
+// We're going to use the Groth16 proving system.
+use scheme::groth16::{
+    create_random_proof, generate_random_parameters, prepare_verifying_key, verify_proof,
+};
 
-    let n: usize = SAMPLES;
-    let constants = RescueConstant::<Fr>::new_fp255();
+let constants = RescueConstant::<Fr>::new_fp255();
 
-    println!("Running rescue_clinkv2...");
+// This may not be cryptographically safe, use
+// `OsRng` (for example) in production software.
+let rng = &mut test_rng();
 
-    //println!("Creating KZG10 parameters...");
-    let degree: usize = n.next_power_of_two();//.try_into().unwrap();
-    // println!("degree: {:?}", degree);
-    let mut crs_time = Duration::new(0, 0);
+//println!("Creating parameters...");
+println!("Running rescue_groth16...");
 
-    // Create parameters for our circuit
-    let start = Instant::now();
+// Let's benchmark stuff!
+let mut total_proving = Duration::new(0, 0);
+let mut total_verifying = Duration::new(0, 0);
+let mut crs_time = Duration::new(0, 0);
 
-    let kzg10_pp = KZG10::<Bn_256>::setup(degree, false, & mut rng).unwrap();
-    let (kzg10_ck, kzg10_vk) = KZG10::<Bn_256>::trim(&kzg10_pp, degree).unwrap();
+// Create parameters for our circuit
+let start = Instant::now();
+let params = {
+    let c = N_RescueDemo::<Fr> {
+        // xl: None,
+        // xr: None,
+        constants: &constants,
+        n: SAMPLES,
+    };
 
-    crs_time += start.elapsed();
+    generate_random_parameters::<Bn_256, _, _>(c, rng).unwrap()
+};
 
-    //println!("Creating proofs...");
+// Prepare the verification key (for proof verification)
+let pvk = prepare_verifying_key(&params.vk);
 
-    // Let's benchmark stuff!
-    let mut total_proving = Duration::new(0, 0);
-    let mut total_verifying = Duration::new(0, 0);
+crs_time += start.elapsed();
 
-    // Prover
+//println!("Creating proofs...");
 
-    let mut prover_pa = ProvingAssignment::<Bn_256>::default();// {
-    //     // at: vec![],
-    //     // bt: vec![],
-    //     // ct: vec![],
-    //     // input_assignment: vec![],
-    //     // aux_assignment: vec![],
-    //     ..Default::default(),
-    // };
 
-    let mut io: Vec<Vec<Fr>> = vec![];
-    let mut output:Vec<Fr> = vec![];
 
-    for i in 0..n {
-        // Generate a random preimage and compute the image
-        let xl = rng.gen();
-        let xr = rng.gen();
-        let image = rescue_hash(xl, xr, &constants);
-        // println!("image: {:?}", &image);
-        output.push(image);
+// Just a place to put the proof data, so we can
+// benchmark deserialization.
+// let mut proof_vec = vec![];
 
-        let start = Instant::now();
-        {
-            // Create an instance of our circuit (with the witness)
-            let c = RescueDemo::<Fr> {
-                xl: Some(xl),
-                xr: Some(xr),
-                constants: &constants,
-            };
-            c.generate_constraints(&mut prover_pa, i);
-        }
-        total_proving += start.elapsed();
-    }
-    let one = vec![Fr::one(); n];
-    io.push(one);
-    io.push(output);
-    
-    let start = Instant::now();
-    // Create a clinkv2 proof with our parameters.
-    let proof = prover_pa.create_proof(&kzg10_ck).unwrap();
-    total_proving += start.elapsed();
 
-    // Verifier
+// proof_vec.truncate(0);
 
-    let mut verifier_pa = ProvingAssignment::<Bn_256>::default();
 
-    let start = Instant::now(); 
+let start = Instant::now();
+// Create an instance of our circuit (with the
+// witness)
+let c = N_RescueDemo {
+    constants: &constants,
+    n: SAMPLES,
+};
 
-    {
-        let xl = rng.gen();
-        let xr = rng.gen();
-        //let image = mimc(xl, xr, &constants);
+// Create a groth16 proof with our parameters.
+let proof = create_random_proof(c, &params, rng).unwrap();
+total_proving += start.elapsed();
 
-        let start = Instant::now();
-        {
-            // Create an instance of our circuit (with the witness)
-            let c = RescueDemo::<Fr> {
-                xl: Some(xl),
-                xr: Some(xr),
-                constants: &constants,
-            };
-            c.generate_constraints(&mut verifier_pa, 0usize);
-        }
-        total_proving += start.elapsed();
-    }
+let start = Instant::now();
+assert!(verify_proof(&pvk, &proof, &[]).unwrap());
+total_verifying += start.elapsed();
+// proof.write(&mut proof_vec).unwrap();
+
+
+    //total_proving += start.elapsed();
+
+    //let start = Instant::now();
+    // let proof = Proof::read(&proof_vec[..]).unwrap();
     // Check the proof
-    assert!(verifier_pa.verify_proof(&kzg10_vk, &proof, &io).unwrap());
-    total_verifying += start.elapsed();
 
-    // Compute time
+let proving_avg = total_proving;// / SAMPLES;
+let proving_avg =
+    proving_avg.subsec_nanos() as f64 / 1_000_000_000f64 + (proving_avg.as_secs() as f64);
 
-    let proving_avg = total_proving;// / n as u32;
-    let proving_avg =
-        proving_avg.subsec_nanos() as f64 / 1_000_000_000f64 + (proving_avg.as_secs() as f64);
+let verifying_avg = total_verifying;// / SAMPLES;
+let verifying_avg =
+    verifying_avg.subsec_nanos() as f64 / 1_000_000_000f64 + (verifying_avg.as_secs() as f64);
+let crs_time =
+    crs_time.subsec_nanos() as f64 / 1_000_000_000f64 + (crs_time.as_secs() as f64);
 
-    let verifying_avg = total_verifying;// / n as u32;
-    let verifying_avg =
-        verifying_avg.subsec_nanos() as f64 / 1_000_000_000f64 + (verifying_avg.as_secs() as f64);
-    let crs_time =
-        crs_time.subsec_nanos() as f64 / 1_000_000_000f64 + (crs_time.as_secs() as f64);
+// println!("Generating CRS time: {:?} seconds", crs_time);
+// println!("Total proving time: {:?} seconds", proving_avg);
+// println!("Total verifying time: {:?} seconds", verifying_avg);
+println!("{:?}", crs_time);
+println!("{:?}", proving_avg);
+println!("{:?}", verifying_avg);
 
-    // println!("Generating CRS time: {:?} seconds", crs_time);
-    // println!("Total proving time: {:?} seconds", proving_avg);
-    // println!("Total verifying time: {:?} seconds", verifying_avg);
-    println!("{:?}", crs_time);
-    println!("{:?}", proving_avg);
-    println!("{:?}", verifying_avg);
+// let proof_size = mem::size_of_val(&*proof);
+// println!("{:?}", proof_size);
 }

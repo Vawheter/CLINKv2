@@ -6,6 +6,7 @@
 //! This construction achieves extractability in the algebraic group model (AGM).
 #![allow(missing_docs)]
 #![allow(dead_code)]
+#![allow(unused_comparisons)]
 
 use crate::{Error, LabeledPolynomial, PCRandomness, Polynomial, ToString, Vec};
 use math::msm::{FixedBaseMSM, VariableBaseMSM};
@@ -39,7 +40,7 @@ impl<E: PairingEngine> KZG10<E> {
         produce_g2_powers: bool,
         rng: &mut R,
     ) -> Result<UniversalParams<E>, Error> {
-        if max_degree < 1 {
+        if max_degree < 0 { //1 {
             return Err(Error::DegreeIsZero);
         }
         let setup_time = start_timer!(|| format!("KZG10::Setup with degree {}", max_degree));
@@ -474,7 +475,7 @@ impl<E: PairingEngine> KZG10<E> {
         num_coefficients: usize,
         num_powers: usize,
     ) -> Result<(), Error> {
-        if num_coefficients < 1 {
+        if num_coefficients < 0 { //1 {
             Err(Error::DegreeIsZero)
         } else {
             Self::check_degree_is_too_large(num_coefficients, num_powers)

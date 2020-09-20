@@ -20,6 +20,9 @@ test_groth16 = []
 test_bulletproofs = []
 clinkv2 = []
 test_clinkv2 = []
+mimc = []
+rescue = []
+poseidon = []
 
 [dependencies]
 math = { path = "../math", default-features = false, features = [ "derive" ] }

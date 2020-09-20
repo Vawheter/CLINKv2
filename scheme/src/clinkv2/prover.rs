@@ -88,7 +88,6 @@ fn as_bytes<T>(x: &T) -> &[u8] {
     use core::mem;
     use core::slice;
 
-    // println!("mem::size_of_val(x):{:?}", mem::size_of_val(x));
     unsafe { slice::from_raw_parts(x as *const T as *const u8, mem::size_of_val(x)) }
 }
 
@@ -197,7 +196,8 @@ impl<E: PairingEngine> ProvingAssignment<E> {
     pub fn create_proof(&self, kzg10_ck: &KZG10_ck<E>)
     -> Result<Proof<E>, SynthesisError>
     {
-
+        // Number of rows of A/B/C matrices
+        let m_abc = self.at.len();
         // Number of io variables (statements)
         let m_io = self.input_assignment.len();
         // Number of aux variables (witnesses)
@@ -206,6 +206,68 @@ impl<E: PairingEngine> ProvingAssignment<E> {
         let m = m_io + m_mid;
         // Number of copies
         let n = self.input_assignment[0].len();
+        // Evaluation domain
+        let domain = EvaluationDomain::<E::Fr>::new(n)
+            .ok_or(SynthesisError::PolynomialDegreeTooLarge)?;
+        let domain_size = domain.size();
+        let zero = E::Fr::zero();
+        let one = E::Fr::one();
+        let hiding_bound = Some(2);
+
+        // println!("&self.aux_assignment: {:?}", &self.aux_assignment);
+        // println!("&self.input_assignment: {:?}", &self.input_assignment);
+
+        // Test a*b=c
+        // for i in 0..m_abc {
+
+        //     let mut ai_values = vec![zero; domain_size];            
+        //     for (coeff, index) in (&self.at[i]).into_iter() {
+        //         match index {
+        //             Index::Input(j) => { cfg_iter_mut!(&mut ai_values)
+        //                                     .zip(&self.input_assignment[*j])
+        //                                     .for_each(|(aij, rij)| *aij += &(*rij * coeff));
+        //             },
+        //             Index::Aux(j) => {  cfg_iter_mut!(&mut ai_values)
+        //                                     .zip(&self.aux_assignment[*j])
+        //                                     .for_each(|(aij, rij)| *aij += &(*rij * coeff));
+        //             },
+        //         };
+        //     }
+
+        //     let mut bi_values = vec![zero; domain_size];            
+        //     for (coeff, index) in (&self.bt[i]).into_iter() {
+        //         match index {
+        //             Index::Input(j) => { cfg_iter_mut!(&mut bi_values)
+        //                                     .zip(&self.input_assignment[*j])
+        //                                     .for_each(|(bij, rij)| *bij += &(*rij * coeff));
+        //             },
+        //             Index::Aux(j) => {  cfg_iter_mut!(&mut bi_values)
+        //                                     .zip(&self.aux_assignment[*j])
+        //                                     .for_each(|(bij, rij)| *bij += &(*rij * coeff));
+        //             },
+        //         };
+        //     }
+
+        //     let mut ci_values = vec![zero; domain_size];            
+        //     for (coeff, index) in (&self.ct[i]).into_iter() {
+        //         match index {
+        //             Index::Input(j) => { cfg_iter_mut!(&mut ci_values)
+        //                                     .zip(&self.input_assignment[*j])
+        //                                     .for_each(|(cij, rij)| *cij += &(*rij * coeff));
+        //             },
+        //             Index::Aux(j) => {  cfg_iter_mut!(&mut ci_values)
+        //                                     .zip(&self.aux_assignment[*j])
+        //                                     .for_each(|(cij, rij)| *cij += &(*rij * coeff));
+        //             },
+        //         };
+        //     }
+            
+        //     println!("verifying {} a*b=c...", i);
+        //     for k in 0..ai_values.len() {
+        //         println!("{:?} * {:?} ?= {:?}", &ai_values[k], &bi_values[k], &ci_values[k]);
+        //         assert_eq!(ai_values[k] * &bi_values[k], ci_values[k]);
+        //     }
+        // }
 
         //println!("m_io: {:?}, m_mid: {:?}, m: {:?}, n: {:?}", m_io, m_mid, m, n);
 
@@ -214,19 +276,12 @@ impl<E: PairingEngine> ProvingAssignment<E> {
         let mut rng = rand::thread_rng();
 
         // Compute and commit witness polynomials
-        let domain = EvaluationDomain::<E::Fr>::new(n)
-            .ok_or(SynthesisError::PolynomialDegreeTooLarge)?;
 
-        let domain_size = domain.size();
 
         let mut r_q_polys = vec![];
         let mut r_mid_comms = vec![];
         let mut r_mid_q_values = vec![];
         let mut r_mid_q_rands = vec![];
-
-        let zero = E::Fr::zero();
-        let one = E::Fr::one();
-        let hiding_bound = Some(2);
 
         let mut rj_commit_time = Duration::new(0, 0);
         let mut rj_ifft_time = Duration::new(0, 0);
@@ -248,7 +303,9 @@ impl<E: PairingEngine> ProvingAssignment<E> {
 
             let rj_coeffs = domain.ifft(&self.aux_assignment[j]);
 
+            // println!("rj_coeffs: {:?}", &rj_coeffs);
             rj_ifft_time += start.elapsed();
+            // println!("rj_coeffs: {:?}", &rj_coeffs);
 
             let mut rj_poly = DensePolynomial::from_coefficients_vec(rj_coeffs);
            
@@ -295,7 +352,6 @@ impl<E: PairingEngine> ProvingAssignment<E> {
         let eta = E::Fr::from_random_bytes(&c).unwrap();
 
         // Compute and commit quotient polynomials
-        let m_abc = self.at.len();
         let mut sum_coset_ab = vec![zero; domain_size];
         let mut sum_c = vec![zero; domain_size];
 
@@ -304,6 +360,12 @@ impl<E: PairingEngine> ProvingAssignment<E> {
         let mut q_commit_time = Duration::new(0, 0);
         let mut abci_fft_time = Duration::new(0, 0);        
         let start = Instant::now();
+
+        // // --- Test
+        // let mut ab = zero;
+        // let mut c = zero;
+        // let alpha = E::Fr::rand(&mut rng);
+        // // --- Test
 
         for i in 0..m_abc {
             // let start3 = Instant::now();
@@ -314,7 +376,7 @@ impl<E: PairingEngine> ProvingAssignment<E> {
                     Index::Input(j) => *j,
                     Index::Aux(j) => m_io + *j,
                 };
-                for k in 0..ai_coeffs.len()
+                for k in 0..r_q_polys[id].coeffs.len()
                 {
                     ai_coeffs[k] += &(r_q_polys[id].coeffs[k] * coeff);
                 }
@@ -327,12 +389,30 @@ impl<E: PairingEngine> ProvingAssignment<E> {
                     Index::Input(j) => *j,
                     Index::Aux(j) => m_io + *j,
                 };
-                for k in 0..bi_coeffs.len()
+                for k in 0..r_q_polys[id].coeffs.len()
                 {
                     bi_coeffs[k] += &(r_q_polys[id].coeffs[k] * coeff);
                 }
             }
             let mut bi = DensePolynomial::from_coefficients_vec(bi_coeffs);
+
+            // --- Test
+            // let mut ci_coeffs = vec![zero; domain_size];
+            // for (coeff, index) in (&self.ct[i]).into_iter() {
+            //     let id = match index {
+            //         Index::Input(j) => *j,
+            //         Index::Aux(j) => m_io + *j,
+            //     };
+            //     for k in 0..ci_coeffs.len()
+            //     {
+            //         ci_coeffs[k] += &(r_q_polys[id].coeffs[k] * coeff);
+            //     }
+            // }
+            // let mut ci = DensePolynomial::from_coefficients_vec(ci_coeffs);
+
+            // ab += &(eta_i * &(ai.evaluate(alpha) * &(bi.evaluate(alpha))));
+            // c += &(eta_i * &(ci.evaluate(alpha)));
+            // --- Test
 
             domain.coset_fft_in_place(&mut ai.coeffs);
             domain.coset_fft_in_place(&mut bi.coeffs);
@@ -356,8 +436,7 @@ impl<E: PairingEngine> ProvingAssignment<E> {
                                             .zip(&self.input_assignment[*j])
                                             .for_each(|(cij, rij)| *cij += &(*rij * coeff));
                     },
-                    Index::Aux(j) => {
-                        cfg_iter_mut!(&mut ci_values)
+                    Index::Aux(j) => {  cfg_iter_mut!(&mut ci_values)
                                             .zip(&self.aux_assignment[*j])
                                             .for_each(|(cij, rij)| *cij += &(*rij * coeff));
                     },
@@ -389,7 +468,7 @@ impl<E: PairingEngine> ProvingAssignment<E> {
         let q_poly = DensePolynomial::from_coefficients_vec(sum_coset_ab);
         // println!("q_ploy: {:?}", q_poly.coeffs);
 
-        //let q = qi_poly.evaluate(alpha);
+        // let q = q_poly.evaluate(alpha);
 
         // Commit to quotient polynomial
         let start2 = Instant::now();
@@ -407,11 +486,11 @@ impl<E: PairingEngine> ProvingAssignment<E> {
         // println!("&r_mid_comms[0..m_mid].to_vec(): \n{:?}", &r_mid_comms[0..m_mid]);
         // println!("as_bytes(r_mid_comms): \n{:?}",as_bytes(&r_mid_comms));
 
-        //let vanishing_poly = domain.vanishing_polynomial();
-        //let t = vanishing_poly.evaluate(alpha);
+        // let vanishing_poly = domain.vanishing_polynomial();
+        // let t = vanishing_poly.evaluate(alpha);
 
-        //println!("verifying q(x)");
-        //assert_eq!(a * &b - &c, q * &t);
+        // println!("verifying q(x)...");
+        // assert_eq!(ab - &c, q * &t);
 
         transcript.append_message(b"quotient polynomial commitments", as_bytes(&q_comm));
 
