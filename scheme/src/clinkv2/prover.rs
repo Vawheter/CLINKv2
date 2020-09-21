@@ -198,6 +198,7 @@ impl<E: PairingEngine> ProvingAssignment<E> {
     {
         // Number of rows of A/B/C matrices
         let m_abc = self.at.len();
+        println!("m_abc:{}", m_abc);
         // Number of io variables (statements)
         let m_io = self.input_assignment.len();
         // Number of aux variables (witnesses)

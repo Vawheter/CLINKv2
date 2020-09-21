@@ -1,3 +1,4 @@
+#![cfg(feature = "rescue")]
 #![allow(unused_imports)]
 #![allow(dead_code)]
 #![allow(unused_must_use)]
@@ -578,6 +579,7 @@ fn pow_with_constraint<F: PrimeField, CS: ConstraintSystem<F>, S: AsRef<[u64]>> 
 
 
 #[test]
+#[cfg(feature = "rescue")]
 fn rescue_clinkv2() {
     let mut rng = &mut test_rng();
 

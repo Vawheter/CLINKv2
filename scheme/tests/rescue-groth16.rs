@@ -1,6 +1,7 @@
 // The following code refers to Marvellous [https://github.com/KULeuven-COSIC/Marvellous] and Distaff [https://github.com/GuildOfWeavers/distaff]
 // and thanks for their work
 // @Author: JiadongLu 
+#![cfg(feature = "rescue")]
 #![allow(unused_imports)]
 #![allow(non_camel_case_types)]
 
@@ -534,6 +535,7 @@ fn pow_with_constraint<F: PrimeField, CS: ConstraintSystem<F>, S: AsRef<[u64]>> 
 } 
 
 #[test]
+#[cfg(feature = "rescue")]
 fn rescue_groth_16() {
 // We're going to use the Groth16 proving system.
 use scheme::groth16::{
