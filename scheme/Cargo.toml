@@ -23,6 +23,8 @@ test_clinkv2 = []
 mimc = []
 rescue = []
 poseidon = []
+test_mulexp = []
+
 
 [dependencies]
 math = { path = "../math", default-features = false, features = [ "derive" ] }

@@ -40,6 +40,8 @@ test_clinkv2 = ["scheme/test_clinkv2"]
 mimc = ["scheme/mimc"]
 rescue = ["scheme/rescue"]
 poseidon = ["scheme/poseidon"]
+test_mulexp = ["scheme/test_mulexp"]
+
 
 [dependencies]
 math = { path = "math", default-features = false }
