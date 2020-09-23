@@ -21,7 +21,7 @@ use std::mem;
 use scheme::r1cs::{ConstraintSynthesizer, ConstraintSystem, SynthesisError};
 
 const MIMC_ROUNDS: usize = 5;
-const SAMPLES: usize = 131070;//131070;//16777210;//131070;//1048570;//131070;//16380;//1048574;
+const SAMPLES: usize = 1048570;//131070;//16777210;//131070;//1048570;//131070;//16380;//1048574;
 
 /// This is an implementation of MiMC, specifically a
 /// variant named `LongsightF322p3` for BN-256.

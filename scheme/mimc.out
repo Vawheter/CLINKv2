@@ -271,3 +271,272 @@ running 0 tests
 
 test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out
 
+nohup: ignoring input
+warning: profiles for the non root package will be ignored, specify profiles at the workspace root:
+package:   /home/liyun/clinkv2/poly_commit/Cargo.toml
+workspace: /home/liyun/clinkv2/Cargo.toml
+   Compiling scheme v0.1.0 (/home/liyun/clinkv2/scheme)
+warning: unused import: `VariableBaseMSM`
+ --> scheme/tests/mulexp.rs:3:31
+  |
+3 | use math::msm::{FixedBaseMSM, VariableBaseMSM};
+  |                               ^^^^^^^^^^^^^^^
+  |
+  = note: `#[warn(unused_imports)]` on by default
+
+warning: unused imports: `AffineCurve`, `Group`, `One`, `ProjectiveCurve`, `Zero`
+ --> scheme/tests/mulexp.rs:5:5
+  |
+5 |     AffineCurve, Group, One, PairingEngine, PrimeField, ProjectiveCurve, UniformRand, Zero,test_rng,
+  |     ^^^^^^^^^^^  ^^^^^  ^^^                             ^^^^^^^^^^^^^^^               ^^^^
+
+warning: unused imports: `Bn_256`, `Fr`
+ --> scheme/tests/mulexp.rs:7:21
+  |
+7 | use curve::bn_256::{Bn_256, Fr};
+  |                     ^^^^^^  ^^
+
+warning: value assigned to `v` is never read
+  --> scheme/tests/mulexp.rs:33:13
+   |
+33 |         let mut v = vec![];
+   |             ^^^^^
+   |
+   = note: `#[warn(unused_assignments)]` on by default
+   = help: maybe it is overwritten before being read?
+
+warning: associated function is never used: `test_mulexp`
+  --> scheme/tests/mulexp.rs:22:8
+   |
+22 |     fn test_mulexp()
+   |        ^^^^^^^^^^^
+   |
+   = note: `#[warn(dead_code)]` on by default
+
+warning: 5 warnings emitted
+
+    Finished release [optimized] target(s) in 5.97s
+     Running /home/liyun/clinkv2/target/release/deps/scheme-a7b3e692a2c8a070
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out
+
+     Running /home/liyun/clinkv2/target/release/deps/fft_clinkv2-70d1311c75138106
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out
+
+     Running /home/liyun/clinkv2/target/release/deps/mimc_clinkv2-b5a3731bcdb90898
+
+running 1 test
+Running mimc_clinkv2...
+m_abc:10
+rj_ifft_time: 945.963436ms
+rj_commit_time: 11.43622501s
+abci_fft_time: 2.046824741s
+q_commit_time: 1.010884759s
+open_r_mid_q_time: 1.155332877s
+3.049233013
+16.673732769
+0.030297086
+test mimc_clinkv2 ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out
+
+     Running /home/liyun/clinkv2/target/release/deps/mimc_groth16-95da974c889c1b03
+
+running 1 test
+Running mimc_groth16...
+test mimc_groth16 ... test mimc_groth16 has been running for over 60 seconds
+h_ifft_time: 11.271444428s
+A_time: 8.252275714s
+B_G1_time: 4.58233673s
+B_G2_time: 15.488007329s
+C_time: 23.068541995s
+280
+86.995501977
+63.452457264
+0.001542406
+test mimc_groth16 ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out
+
+     Running /home/liyun/clinkv2/target/release/deps/mulexp-b79ce5ca62893c69
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out
+
+     Running /home/liyun/clinkv2/target/release/deps/poseidon_clinkv2-d62d3db52d9fccf0
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out
+
+     Running /home/liyun/clinkv2/target/release/deps/poseidon_groth16-fc14cab79d6d6eb4
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out
+
+     Running /home/liyun/clinkv2/target/release/deps/rescue_clinkv2-aab3b968bcd78e49
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out
+
+     Running /home/liyun/clinkv2/target/release/deps/rescue_groth16-c6f182f382af30a8
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out
+
+     Running /home/liyun/clinkv2/target/release/deps/test_poly_commit-fadfe05ca7dbebd2
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out
+
+   Doc-tests scheme
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out
+
+nohup: ignoring input
+warning: profiles for the non root package will be ignored, specify profiles at the workspace root:
+package:   /home/liyun/clinkv2/poly_commit/Cargo.toml
+workspace: /home/liyun/clinkv2/Cargo.toml
+   Compiling scheme v0.1.0 (/home/liyun/clinkv2/scheme)
+warning: unused import: `VariableBaseMSM`
+ --> scheme/tests/mulexp.rs:3:31
+  |
+3 | use math::msm::{FixedBaseMSM, VariableBaseMSM};
+  |                               ^^^^^^^^^^^^^^^
+  |
+  = note: `#[warn(unused_imports)]` on by default
+
+warning: unused imports: `AffineCurve`, `Group`, `One`, `ProjectiveCurve`, `Zero`
+ --> scheme/tests/mulexp.rs:5:5
+  |
+5 |     AffineCurve, Group, One, PairingEngine, PrimeField, ProjectiveCurve, UniformRand, Zero,test_rng,
+  |     ^^^^^^^^^^^  ^^^^^  ^^^                             ^^^^^^^^^^^^^^^               ^^^^
+
+warning: unused imports: `Bn_256`, `Fr`
+ --> scheme/tests/mulexp.rs:7:21
+  |
+7 | use curve::bn_256::{Bn_256, Fr};
+  |                     ^^^^^^  ^^
+
+warning: value assigned to `v` is never read
+  --> scheme/tests/mulexp.rs:33:13
+   |
+33 |         let mut v = vec![];
+   |             ^^^^^
+   |
+   = note: `#[warn(unused_assignments)]` on by default
+   = help: maybe it is overwritten before being read?
+
+warning: associated function is never used: `test_mulexp`
+  --> scheme/tests/mulexp.rs:22:8
+   |
+22 |     fn test_mulexp()
+   |        ^^^^^^^^^^^
+   |
+   = note: `#[warn(dead_code)]` on by default
+
+warning: 5 warnings emitted
+
+    Finished release [optimized] target(s) in 4.36s
+     Running /home/liyun/clinkv2/target/release/deps/scheme-a7b3e692a2c8a070
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out
+
+     Running /home/liyun/clinkv2/target/release/deps/fft_clinkv2-70d1311c75138106
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out
+
+     Running /home/liyun/clinkv2/target/release/deps/mimc_clinkv2-b5a3731bcdb90898
+
+running 1 test
+Running mimc_clinkv2...
+m_abc:10
+test mimc_clinkv2 ... test mimc_clinkv2 has been running for over 60 seconds
+rj_ifft_time: 9.33335724s
+rj_commit_time: 73.312831487s
+abci_fft_time: 19.660083169s
+q_commit_time: 6.638517369s
+open_r_mid_q_time: 7.971656444s
+23.099811894
+117.55767089
+0.235388577
+test mimc_clinkv2 ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out
+
+     Running /home/liyun/clinkv2/target/release/deps/mimc_groth16-95da974c889c1b03
+
+running 1 test
+Running mimc_groth16...
+test mimc_groth16 ... test mimc_groth16 has been running for over 60 seconds
+h_ifft_time: 101.856494417s
+A_time: 66.336094626s
+B_G1_time: 35.359703521s
+B_G2_time: 109.050980639s
+C_time: 183.664086588s
+280
+635.202054124
+502.294150878
+0.001571332
+test mimc_groth16 ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out
+
+     Running /home/liyun/clinkv2/target/release/deps/mulexp-b79ce5ca62893c69
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out
+
+     Running /home/liyun/clinkv2/target/release/deps/poseidon_clinkv2-d62d3db52d9fccf0
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out
+
+     Running /home/liyun/clinkv2/target/release/deps/poseidon_groth16-fc14cab79d6d6eb4
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out
+
+     Running /home/liyun/clinkv2/target/release/deps/rescue_clinkv2-aab3b968bcd78e49
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out
+
+     Running /home/liyun/clinkv2/target/release/deps/rescue_groth16-c6f182f382af30a8
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out
+
+     Running /home/liyun/clinkv2/target/release/deps/test_poly_commit-fadfe05ca7dbebd2
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out
+
+   Doc-tests scheme
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out
+

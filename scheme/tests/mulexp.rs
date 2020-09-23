@@ -21,7 +21,7 @@ impl<E: PairingEngine> MulExpTest<E> {
 
     fn test_mulexp()
     {
-        let n = 5;
+        let n = 10;
         let shift = 14;
         let mut rng = &mut test_rng();
     
@@ -36,9 +36,11 @@ impl<E: PairingEngine> MulExpTest<E> {
     
         for _ in 0..2<<shift {
             v = (0..n).map(|_| E::Fr::rand(&mut rng)).collect::<_>();
+
+            start = Instant::now();
             FixedBaseMSM::multi_scalar_mul::<E::G1Projective>(scalar_bits, g1_window, &g1_table, &v);
+            t += start.elapsed();
         }
-        t += start.elapsed();
         println!("{:?}", t);
     
         t = Duration::new(0, 0);
