@@ -14,7 +14,6 @@ use rayon::prelude::*;
 
 #[derive(Debug)]
 struct MulExpTest<E: PairingEngine> {
-    n: usize,
     _g1_generator: PhantomData<E>,
 }
 
@@ -60,6 +59,7 @@ impl<E: PairingEngine> MulExpTest<E> {
 }
 
 #[test]
+#[cfg(feature="test_mulexp")]
 fn mulexp()
 {
     MulExpTest::<Bn_256>::test_mulexp();

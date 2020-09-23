@@ -11,7 +11,7 @@ edition = "2018"
 [features]
 default = ["full"]
 full = ["parallel", "clinkv2", "groth16", "bulletproofs"]
-#full = ["clinkv2", "groth16", "bulletproofs"]
+#full = ["std", "clinkv2", "groth16", "bulletproofs"]
 std = ["math/std"]
 parallel = ["std", "rayon", "math/parallel"]
 groth16 = []

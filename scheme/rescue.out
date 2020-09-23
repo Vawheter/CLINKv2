@@ -1,0 +1,848 @@
+nohup: ignoring input
+warning: profiles for the non root package will be ignored, specify profiles at the workspace root:
+package:   /home/liyun/clinkv2/clinkv2/poly_commit/Cargo.toml
+workspace: /home/liyun/clinkv2/clinkv2/Cargo.toml
+   Compiling scheme v0.1.0 (/home/liyun/clinkv2/clinkv2/scheme)
+warning: unused import: `VariableBaseMSM`
+ --> scheme/tests/mulexp.rs:3:31
+  |
+3 | use math::msm::{FixedBaseMSM, VariableBaseMSM};
+  |                               ^^^^^^^^^^^^^^^
+  |
+  = note: `#[warn(unused_imports)]` on by default
+
+warning: unused imports: `AffineCurve`, `Group`, `One`, `ProjectiveCurve`, `Zero`
+ --> scheme/tests/mulexp.rs:5:5
+  |
+5 |     AffineCurve, Group, One, PairingEngine, PrimeField, ProjectiveCurve, UniformRand, Zero,test_rng,
+  |     ^^^^^^^^^^^  ^^^^^  ^^^                             ^^^^^^^^^^^^^^^               ^^^^
+
+warning: unused imports: `Bn_256`, `Fr`
+ --> scheme/tests/mulexp.rs:7:21
+  |
+7 | use curve::bn_256::{Bn_256, Fr};
+  |                     ^^^^^^  ^^
+
+warning: unused import: `rayon::prelude`
+  --> scheme/tests/mulexp.rs:13:5
+   |
+13 | use rayon::prelude::*;
+   |     ^^^^^^^^^^^^^^
+
+warning: value assigned to `v` is never read
+  --> scheme/tests/mulexp.rs:33:13
+   |
+33 |         let mut v = vec![];
+   |             ^^^^^
+   |
+   = note: `#[warn(unused_assignments)]` on by default
+   = help: maybe it is overwritten before being read?
+
+warning: associated function is never used: `test_mulexp`
+  --> scheme/tests/mulexp.rs:22:8
+   |
+22 |     fn test_mulexp()
+   |        ^^^^^^^^^^^
+   |
+   = note: `#[warn(dead_code)]` on by default
+
+warning: 6 warnings emitted
+
+    Finished release [optimized] target(s) in 10.45s
+     Running /home/liyun/clinkv2/clinkv2/target/release/deps/scheme-2f9ed62a83d3bd9e
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out
+
+     Running /home/liyun/clinkv2/clinkv2/target/release/deps/fft_clinkv2-c95ab5131e35237c
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out
+
+     Running /home/liyun/clinkv2/clinkv2/target/release/deps/mimc_clinkv2-b5030b46a8901bf9
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out
+
+     Running /home/liyun/clinkv2/clinkv2/target/release/deps/mimc_groth16-67c8a4c302d37f5f
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out
+
+     Running /home/liyun/clinkv2/clinkv2/target/release/deps/mulexp-924e41f4dbfd9030
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out
+
+     Running /home/liyun/clinkv2/clinkv2/target/release/deps/poseidon_clinkv2-604cb061c5973581
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out
+
+     Running /home/liyun/clinkv2/clinkv2/target/release/deps/poseidon_groth16-e24371a1e66000ec
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out
+
+     Running /home/liyun/clinkv2/clinkv2/target/release/deps/rescue_clinkv2-b519f3b61c6fb3f3
+
+running 1 test
+Running rescue_clinkv2...
+m_abc:6049
+test rescue_clinkv2 ... test rescue_clinkv2 has been running for over 60 seconds
+rj_ifft_time: 108.283861s
+rj_commit_time: 362.588564741s
+abci_fft_time: 258.119444792s
+q_commit_time: 45.405837ms
+open_r_mid_q_time: 35.9149572s
+0.247223617
+797.128271001
+2.034153406
+test rescue_clinkv2 ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out
+
+     Running /home/liyun/clinkv2/clinkv2/target/release/deps/rescue_groth16-3e4f762fae2f0658
+
+running 1 test
+Running rescue_groth16...
+test rescue_groth_16 ... test rescue_groth_16 has been running for over 60 seconds
+h_ifft_time: 626.021803424s
+A_time: 139.723381628s
+B_G1_time: 100.098133212s
+B_G2_time: 284.717321708s
+C_time: 364.891422876s
+280
+1502.984049702
+1776.164702357
+0.005451746
+test rescue_groth_16 ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out
+
+     Running /home/liyun/clinkv2/clinkv2/target/release/deps/test_poly_commit-b7680c566e974d62
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out
+
+   Doc-tests scheme
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out
+
+nohup: ignoring input
+warning: profiles for the non root package will be ignored, specify profiles at the workspace root:
+package:   /home/liyun/clinkv2/clinkv2/poly_commit/Cargo.toml
+workspace: /home/liyun/clinkv2/clinkv2/Cargo.toml
+   Compiling scheme v0.1.0 (/home/liyun/clinkv2/clinkv2/scheme)
+warning: unused import: `VariableBaseMSM`
+ --> scheme/tests/mulexp.rs:3:31
+  |
+3 | use math::msm::{FixedBaseMSM, VariableBaseMSM};
+  |                               ^^^^^^^^^^^^^^^
+  |
+  = note: `#[warn(unused_imports)]` on by default
+
+warning: unused imports: `AffineCurve`, `Group`, `One`, `ProjectiveCurve`, `Zero`
+ --> scheme/tests/mulexp.rs:5:5
+  |
+5 |     AffineCurve, Group, One, PairingEngine, PrimeField, ProjectiveCurve, UniformRand, Zero,test_rng,
+  |     ^^^^^^^^^^^  ^^^^^  ^^^                             ^^^^^^^^^^^^^^^               ^^^^
+
+warning: unused imports: `Bn_256`, `Fr`
+ --> scheme/tests/mulexp.rs:7:21
+  |
+7 | use curve::bn_256::{Bn_256, Fr};
+  |                     ^^^^^^  ^^
+
+warning: unused import: `rayon::prelude`
+  --> scheme/tests/mulexp.rs:13:5
+   |
+13 | use rayon::prelude::*;
+   |     ^^^^^^^^^^^^^^
+
+warning: value assigned to `v` is never read
+  --> scheme/tests/mulexp.rs:33:13
+   |
+33 |         let mut v = vec![];
+   |             ^^^^^
+   |
+   = note: `#[warn(unused_assignments)]` on by default
+   = help: maybe it is overwritten before being read?
+
+warning: associated function is never used: `test_mulexp`
+  --> scheme/tests/mulexp.rs:22:8
+   |
+22 |     fn test_mulexp()
+   |        ^^^^^^^^^^^
+   |
+   = note: `#[warn(dead_code)]` on by default
+
+warning: 6 warnings emitted
+
+    Finished release [optimized] target(s) in 13.54s
+     Running /home/liyun/clinkv2/clinkv2/target/release/deps/scheme-2f9ed62a83d3bd9e
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out
+
+     Running /home/liyun/clinkv2/clinkv2/target/release/deps/fft_clinkv2-c95ab5131e35237c
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out
+
+     Running /home/liyun/clinkv2/clinkv2/target/release/deps/mimc_clinkv2-b5030b46a8901bf9
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out
+
+     Running /home/liyun/clinkv2/clinkv2/target/release/deps/mimc_groth16-67c8a4c302d37f5f
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out
+
+     Running /home/liyun/clinkv2/clinkv2/target/release/deps/mulexp-924e41f4dbfd9030
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out
+
+     Running /home/liyun/clinkv2/clinkv2/target/release/deps/poseidon_clinkv2-604cb061c5973581
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out
+
+     Running /home/liyun/clinkv2/clinkv2/target/release/deps/poseidon_groth16-e24371a1e66000ec
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out
+
+     Running /home/liyun/clinkv2/clinkv2/target/release/deps/rescue_clinkv2-b519f3b61c6fb3f3
+
+running 1 test
+Running rescue_clinkv2...
+m_abc:1213
+test rescue_clinkv2 ... test rescue_clinkv2 has been running for over 60 seconds
+rj_ifft_time: 20.997085449s
+rj_commit_time: 71.417221173s
+abci_fft_time: 53.994603283s
+q_commit_time: 47.064306ms
+open_r_mid_q_time: 8.217764028s
+0.188893031
+159.27894158
+0.433673818
+test rescue_clinkv2 ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out
+
+     Running /home/liyun/clinkv2/clinkv2/target/release/deps/rescue_groth16-3e4f762fae2f0658
+
+running 1 test
+Running rescue_groth16...
+test rescue_groth_16 ... test rescue_groth_16 has been running for over 60 seconds
+h_ifft_time: 156.389484967s
+A_time: 29.962341087s
+B_G1_time: 20.810564471s
+B_G2_time: 59.667155685s
+C_time: 81.59920034s
+280
+312.986505519
+388.035525842
+0.004924157
+test rescue_groth_16 ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out
+
+     Running /home/liyun/clinkv2/clinkv2/target/release/deps/test_poly_commit-b7680c566e974d62
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out
+
+   Doc-tests scheme
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out
+
+nohup: ignoring input
+warning: profiles for the non root package will be ignored, specify profiles at the workspace root:
+package:   /home/liyun/clinkv2/clinkv2/poly_commit/Cargo.toml
+workspace: /home/liyun/clinkv2/clinkv2/Cargo.toml
+   Compiling scheme v0.1.0 (/home/liyun/clinkv2/clinkv2/scheme)
+warning: unused import: `VariableBaseMSM`
+ --> scheme/tests/mulexp.rs:3:31
+  |
+3 | use math::msm::{FixedBaseMSM, VariableBaseMSM};
+  |                               ^^^^^^^^^^^^^^^
+  |
+  = note: `#[warn(unused_imports)]` on by default
+
+warning: unused imports: `AffineCurve`, `Group`, `One`, `ProjectiveCurve`, `Zero`
+ --> scheme/tests/mulexp.rs:5:5
+  |
+5 |     AffineCurve, Group, One, PairingEngine, PrimeField, ProjectiveCurve, UniformRand, Zero,test_rng,
+  |     ^^^^^^^^^^^  ^^^^^  ^^^                             ^^^^^^^^^^^^^^^               ^^^^
+
+warning: unused imports: `Bn_256`, `Fr`
+ --> scheme/tests/mulexp.rs:7:21
+  |
+7 | use curve::bn_256::{Bn_256, Fr};
+  |                     ^^^^^^  ^^
+
+warning: unused import: `rayon::prelude`
+  --> scheme/tests/mulexp.rs:13:5
+   |
+13 | use rayon::prelude::*;
+   |     ^^^^^^^^^^^^^^
+
+warning: value assigned to `v` is never read
+  --> scheme/tests/mulexp.rs:33:13
+   |
+33 |         let mut v = vec![];
+   |             ^^^^^
+   |
+   = note: `#[warn(unused_assignments)]` on by default
+   = help: maybe it is overwritten before being read?
+
+warning: associated function is never used: `test_mulexp`
+  --> scheme/tests/mulexp.rs:22:8
+   |
+22 |     fn test_mulexp()
+   |        ^^^^^^^^^^^
+   |
+   = note: `#[warn(dead_code)]` on by default
+
+warning: 6 warnings emitted
+
+    Finished release [optimized] target(s) in 11.47s
+     Running /home/liyun/clinkv2/clinkv2/target/release/deps/scheme-2f9ed62a83d3bd9e
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out
+
+     Running /home/liyun/clinkv2/clinkv2/target/release/deps/fft_clinkv2-c95ab5131e35237c
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out
+
+     Running /home/liyun/clinkv2/clinkv2/target/release/deps/mimc_clinkv2-b5030b46a8901bf9
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out
+
+     Running /home/liyun/clinkv2/clinkv2/target/release/deps/mimc_groth16-67c8a4c302d37f5f
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out
+
+     Running /home/liyun/clinkv2/clinkv2/target/release/deps/mulexp-924e41f4dbfd9030
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out
+
+     Running /home/liyun/clinkv2/clinkv2/target/release/deps/poseidon_clinkv2-604cb061c5973581
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out
+
+     Running /home/liyun/clinkv2/clinkv2/target/release/deps/poseidon_groth16-e24371a1e66000ec
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out
+
+     Running /home/liyun/clinkv2/clinkv2/target/release/deps/rescue_clinkv2-b519f3b61c6fb3f3
+
+running 1 test
+Running rescue_clinkv2...
+m_abc:1213
+test rescue_clinkv2 ... test rescue_clinkv2 has been running for over 60 seconds
+rj_ifft_time: 36.661305298s
+rj_commit_time: 119.766463161s
+abci_fft_time: 94.60981531s
+q_commit_time: 84.015002ms
+open_r_mid_q_time: 13.552973979s
+0.331612395
+273.591412685
+0.442284518
+test rescue_clinkv2 ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out
+
+     Running /home/liyun/clinkv2/clinkv2/target/release/deps/rescue_groth16-3e4f762fae2f0658
+
+running 1 test
+Running rescue_groth16...
+test rescue_groth16 ... test rescue_groth16 has been running for over 60 seconds
+h_ifft_time: 323.785388517s
+A_time: 58.400923587s
+B_G1_time: 40.306258662s
+B_G2_time: 113.639086522s
+C_time: 163.201118925s
+280
+627.620459312
+799.944147704
+0.005100143
+test rescue_groth16 ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out
+
+     Running /home/liyun/clinkv2/clinkv2/target/release/deps/test_poly_commit-b7680c566e974d62
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out
+
+   Doc-tests scheme
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out
+
+nohup: ignoring input
+warning: profiles for the non root package will be ignored, specify profiles at the workspace root:
+package:   /home/liyun/clinkv2/clinkv2/poly_commit/Cargo.toml
+workspace: /home/liyun/clinkv2/clinkv2/Cargo.toml
+   Compiling scheme v0.1.0 (/home/liyun/clinkv2/clinkv2/scheme)
+warning: unused import: `VariableBaseMSM`
+ --> scheme/tests/mulexp.rs:3:31
+  |
+3 | use math::msm::{FixedBaseMSM, VariableBaseMSM};
+  |                               ^^^^^^^^^^^^^^^
+  |
+  = note: `#[warn(unused_imports)]` on by default
+
+warning: unused imports: `AffineCurve`, `Group`, `One`, `ProjectiveCurve`, `Zero`
+ --> scheme/tests/mulexp.rs:5:5
+  |
+5 |     AffineCurve, Group, One, PairingEngine, PrimeField, ProjectiveCurve, UniformRand, Zero,test_rng,
+  |     ^^^^^^^^^^^  ^^^^^  ^^^                             ^^^^^^^^^^^^^^^               ^^^^
+
+warning: unused imports: `Bn_256`, `Fr`
+ --> scheme/tests/mulexp.rs:7:21
+  |
+7 | use curve::bn_256::{Bn_256, Fr};
+  |                     ^^^^^^  ^^
+
+warning: unused import: `rayon::prelude`
+  --> scheme/tests/mulexp.rs:13:5
+   |
+13 | use rayon::prelude::*;
+   |     ^^^^^^^^^^^^^^
+
+warning: value assigned to `v` is never read
+  --> scheme/tests/mulexp.rs:33:13
+   |
+33 |         let mut v = vec![];
+   |             ^^^^^
+   |
+   = note: `#[warn(unused_assignments)]` on by default
+   = help: maybe it is overwritten before being read?
+
+warning: associated function is never used: `test_mulexp`
+  --> scheme/tests/mulexp.rs:22:8
+   |
+22 |     fn test_mulexp()
+   |        ^^^^^^^^^^^
+   |
+   = note: `#[warn(dead_code)]` on by default
+
+warning: 6 warnings emitted
+
+    Finished release [optimized] target(s) in 11.57s
+     Running /home/liyun/clinkv2/clinkv2/target/release/deps/scheme-2f9ed62a83d3bd9e
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out
+
+     Running /home/liyun/clinkv2/clinkv2/target/release/deps/fft_clinkv2-c95ab5131e35237c
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out
+
+     Running /home/liyun/clinkv2/clinkv2/target/release/deps/mimc_clinkv2-b5030b46a8901bf9
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out
+
+     Running /home/liyun/clinkv2/clinkv2/target/release/deps/mimc_groth16-67c8a4c302d37f5f
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out
+
+     Running /home/liyun/clinkv2/clinkv2/target/release/deps/mulexp-924e41f4dbfd9030
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out
+
+     Running /home/liyun/clinkv2/clinkv2/target/release/deps/poseidon_clinkv2-604cb061c5973581
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out
+
+     Running /home/liyun/clinkv2/clinkv2/target/release/deps/poseidon_groth16-e24371a1e66000ec
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out
+
+     Running /home/liyun/clinkv2/clinkv2/target/release/deps/rescue_clinkv2-b519f3b61c6fb3f3
+
+running 1 test
+Running rescue_clinkv2...
+m_abc:1213
+test rescue_clinkv2 ... test rescue_clinkv2 has been running for over 60 seconds
+rj_ifft_time: 62.723427238s
+rj_commit_time: 172.266213713s
+abci_fft_time: 162.539025609s
+q_commit_time: 139.76618ms
+open_r_mid_q_time: 22.53899175s
+0.493232033
+438.133231774
+0.471327038
+test rescue_clinkv2 ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out
+
+     Running /home/liyun/clinkv2/clinkv2/target/release/deps/rescue_groth16-3e4f762fae2f0658
+
+running 1 test
+Running rescue_groth16...
+test rescue_groth16 ... test rescue_groth16 has been running for over 60 seconds
+h_ifft_time: 622.159390832s
+A_time: 117.876352533s
+B_G1_time: 80.828865992s
+B_G2_time: 228.487131157s
+C_time: 327.794862676s
+280
+1257.988787724
+1567.970786831
+0.005686133
+test rescue_groth16 ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out
+
+     Running /home/liyun/clinkv2/clinkv2/target/release/deps/test_poly_commit-b7680c566e974d62
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out
+
+   Doc-tests scheme
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out
+
+nohup: ignoring input
+warning: profiles for the non root package will be ignored, specify profiles at the workspace root:
+package:   /home/liyun/clinkv2/clinkv2/poly_commit/Cargo.toml
+workspace: /home/liyun/clinkv2/clinkv2/Cargo.toml
+   Compiling libc v0.2.77
+   Compiling getrandom v0.1.15
+   Compiling rand_core v0.5.1
+   Compiling rand_chacha v0.2.2
+   Compiling merlin v2.0.0
+   Compiling rand v0.7.3
+   Compiling math v0.1.0 (/home/liyun/clinkv2/clinkv2/math)
+   Compiling algebra-core v0.1.1-alpha.0 (https://github.com/scipr-lab/zexe/#85cac177)
+   Compiling curve v0.1.0 (/home/liyun/clinkv2/clinkv2/curve)
+   Compiling poly_commit v0.1.0 (/home/liyun/clinkv2/clinkv2/poly_commit)
+   Compiling scheme v0.1.0 (/home/liyun/clinkv2/clinkv2/scheme)
+warning: unused import: `VariableBaseMSM`
+ --> scheme/tests/mulexp.rs:3:31
+  |
+3 | use math::msm::{FixedBaseMSM, VariableBaseMSM};
+  |                               ^^^^^^^^^^^^^^^
+  |
+  = note: `#[warn(unused_imports)]` on by default
+
+warning: unused imports: `AffineCurve`, `Group`, `One`, `ProjectiveCurve`, `Zero`
+ --> scheme/tests/mulexp.rs:5:5
+  |
+5 |     AffineCurve, Group, One, PairingEngine, PrimeField, ProjectiveCurve, UniformRand, Zero,test_rng,
+  |     ^^^^^^^^^^^  ^^^^^  ^^^                             ^^^^^^^^^^^^^^^               ^^^^
+
+warning: unused imports: `Bn_256`, `Fr`
+ --> scheme/tests/mulexp.rs:7:21
+  |
+7 | use curve::bn_256::{Bn_256, Fr};
+  |                     ^^^^^^  ^^
+
+warning: value assigned to `v` is never read
+  --> scheme/tests/mulexp.rs:33:13
+   |
+33 |         let mut v = vec![];
+   |             ^^^^^
+   |
+   = note: `#[warn(unused_assignments)]` on by default
+   = help: maybe it is overwritten before being read?
+
+warning: associated function is never used: `test_mulexp`
+  --> scheme/tests/mulexp.rs:22:8
+   |
+22 |     fn test_mulexp()
+   |        ^^^^^^^^^^^
+   |
+   = note: `#[warn(dead_code)]` on by default
+
+warning: 5 warnings emitted
+
+    Finished release [optimized] target(s) in 1m 32s
+     Running /home/liyun/clinkv2/clinkv2/target/release/deps/scheme-502311832ca50100
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out
+
+     Running /home/liyun/clinkv2/clinkv2/target/release/deps/fft_clinkv2-b69784a323aa89bd
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out
+
+     Running /home/liyun/clinkv2/clinkv2/target/release/deps/mimc_clinkv2-65f05e8ee97bfcee
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out
+
+     Running /home/liyun/clinkv2/clinkv2/target/release/deps/mimc_groth16-0443df4ec35577af
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out
+
+     Running /home/liyun/clinkv2/clinkv2/target/release/deps/mulexp-79bad7bd5028fe85
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out
+
+     Running /home/liyun/clinkv2/clinkv2/target/release/deps/poseidon_clinkv2-c88ab59d28bb81d0
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out
+
+     Running /home/liyun/clinkv2/clinkv2/target/release/deps/poseidon_groth16-d2f1819365ba7203
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out
+
+     Running /home/liyun/clinkv2/clinkv2/target/release/deps/rescue_clinkv2-568aaf455881bb73
+
+running 1 test
+Running rescue_clinkv2...
+m_abc:1213
+test rescue_clinkv2 ... test rescue_clinkv2 has been running for over 60 seconds
+rj_ifft_time: 30.821865633s
+rj_commit_time: 741.768460347s
+abci_fft_time: 72.201169826s
+q_commit_time: 544.132698ms
+open_r_mid_q_time: 6.049426873s
+1.5764326039999998
+856.221217909
+0.421123766
+test rescue_clinkv2 ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out
+
+     Running /home/liyun/clinkv2/clinkv2/target/release/deps/rescue_groth16-d02a192bcda77d93
+
+running 1 test
+Running rescue_groth16...
+test rescue_groth16 ... test rescue_groth16 has been running for over 60 seconds
+h_ifft_time: 702.656097596s
+A_time: 392.764013298s
+B_G1_time: 270.872220206s
+B_G2_time: 830.50277835s
+C_time: 1059.051374448s
+280
+3889.996552135
+3300.081612398
+0.005001265
+test rescue_groth16 ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out
+
+     Running /home/liyun/clinkv2/clinkv2/target/release/deps/test_poly_commit-5271a01c14122506
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out
+
+   Doc-tests scheme
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out
+
+nohup: ignoring input
+warning: profiles for the non root package will be ignored, specify profiles at the workspace root:
+package:   /home/liyun/clinkv2/clinkv2/poly_commit/Cargo.toml
+workspace: /home/liyun/clinkv2/clinkv2/Cargo.toml
+   Compiling scheme v0.1.0 (/home/liyun/clinkv2/clinkv2/scheme)
+warning: unused import: `VariableBaseMSM`
+ --> scheme/tests/mulexp.rs:3:31
+  |
+3 | use math::msm::{FixedBaseMSM, VariableBaseMSM};
+  |                               ^^^^^^^^^^^^^^^
+  |
+  = note: `#[warn(unused_imports)]` on by default
+
+warning: unused imports: `AffineCurve`, `Group`, `One`, `ProjectiveCurve`, `Zero`
+ --> scheme/tests/mulexp.rs:5:5
+  |
+5 |     AffineCurve, Group, One, PairingEngine, PrimeField, ProjectiveCurve, UniformRand, Zero,test_rng,
+  |     ^^^^^^^^^^^  ^^^^^  ^^^                             ^^^^^^^^^^^^^^^               ^^^^
+
+warning: unused imports: `Bn_256`, `Fr`
+ --> scheme/tests/mulexp.rs:7:21
+  |
+7 | use curve::bn_256::{Bn_256, Fr};
+  |                     ^^^^^^  ^^
+
+warning: value assigned to `v` is never read
+  --> scheme/tests/mulexp.rs:33:13
+   |
+33 |         let mut v = vec![];
+   |             ^^^^^
+   |
+   = note: `#[warn(unused_assignments)]` on by default
+   = help: maybe it is overwritten before being read?
+
+warning: associated function is never used: `test_mulexp`
+  --> scheme/tests/mulexp.rs:22:8
+   |
+22 |     fn test_mulexp()
+   |        ^^^^^^^^^^^
+   |
+   = note: `#[warn(dead_code)]` on by default
+
+warning: 5 warnings emitted
+
+    Finished release [optimized] target(s) in 34.64s
+     Running /home/liyun/clinkv2/clinkv2/target/release/deps/scheme-d323fd386de90cba
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out
+
+     Running /home/liyun/clinkv2/clinkv2/target/release/deps/fft_clinkv2-115d4441f160fa53
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out
+
+     Running /home/liyun/clinkv2/clinkv2/target/release/deps/mimc_clinkv2-f4a96e948135d54b
+
+running 1 test
+Running mimc_clinkv2...
+nohup: ignoring input
+warning: profiles for the non root package will be ignored, specify profiles at the workspace root:
+package:   /home/liyun/clinkv2/clinkv2/poly_commit/Cargo.toml
+workspace: /home/liyun/clinkv2/clinkv2/Cargo.toml
+warning: unused import: `VariableBaseMSM`
+ --> scheme/tests/mulexp.rs:3:31
+  |
+3 | use math::msm::{FixedBaseMSM, VariableBaseMSM};
+  |                               ^^^^^^^^^^^^^^^
+  |
+  = note: `#[warn(unused_imports)]` on by default
+
+warning: unused imports: `AffineCurve`, `Group`, `One`, `ProjectiveCurve`, `Zero`
+ --> scheme/tests/mulexp.rs:5:5
+  |
+5 |     AffineCurve, Group, One, PairingEngine, PrimeField, ProjectiveCurve, UniformRand, Zero,test_rng,
+  |     ^^^^^^^^^^^  ^^^^^  ^^^                             ^^^^^^^^^^^^^^^               ^^^^
+
+warning: unused imports: `Bn_256`, `Fr`
+ --> scheme/tests/mulexp.rs:7:21
+  |
+7 | use curve::bn_256::{Bn_256, Fr};
+  |                     ^^^^^^  ^^
+
+warning: value assigned to `v` is never read
+  --> scheme/tests/mulexp.rs:33:13
+   |
+33 |         let mut v = vec![];
+   |             ^^^^^
+   |
+   = note: `#[warn(unused_assignments)]` on by default
+   = help: maybe it is overwritten before being read?
+
+warning: associated function is never used: `test_mulexp`
+  --> scheme/tests/mulexp.rs:22:8
+   |
+22 |     fn test_mulexp()
+   |        ^^^^^^^^^^^
+   |
+   = note: `#[warn(dead_code)]` on by default
+
+warning: 5 warnings emitted
+
+    Finished release [optimized] target(s) in 0.20s
+     Running /home/liyun/clinkv2/clinkv2/target/release/deps/scheme-d323fd386de90cba
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out
+
+     Running /home/liyun/clinkv2/clinkv2/target/release/deps/fft_clinkv2-115d4441f160fa53
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out
+
+     Running /home/liyun/clinkv2/clinkv2/target/release/deps/mimc_clinkv2-f4a96e948135d54b
+
+running 1 test
+Running mimc_clinkv2...
+m_abc:10
+rj_ifft_time: 3.163433043s
+rj_commit_time: 40.023797615s
+test mimc_clinkv2 ... test mimc_clinkv2 has been running for over 60 seconds
+abci_fft_time: 6.808761048s
+q_commit_time: 3.487182733s
+open_r_mid_q_time: 3.982224587s
+10.411535252
+57.783594853
+0.124819738
+test mimc_clinkv2 ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out
+
+     Running /home/liyun/clinkv2/clinkv2/target/release/deps/mimc_groth16-cd69fc127b6a3ecc
+
+running 1 test
+Running mimc_groth16...

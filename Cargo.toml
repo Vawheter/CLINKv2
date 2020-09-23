@@ -25,8 +25,8 @@ exclude = [
 
 [features]
 default = ["full"]
-#full = ["parallel", "bn_256", "bls12_381", "groth16", "bulletproofs"]
-full = ["bn_256", "bls12_381", "groth16", "clinkv2", "bulletproofs"]
+#full = ["parallel", "bn_256", "bls12_381", "groth16", "clinkv2", "bulletproofs"]
+full = ["std", "bn_256", "bls12_381", "groth16", "clinkv2", "bulletproofs"]
 parallel = ["std", "math/parallel", "curve/parallel", "scheme/parallel"]
 std = ["math/std", "curve/std", "scheme/std"]
 bn_256 = ["curve/bn_256"]

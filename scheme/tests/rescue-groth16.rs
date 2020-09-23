@@ -22,8 +22,8 @@ use std::mem;
 // We'll use these interfaces to construct our circuit.
 use scheme::r1cs::{ConstraintSynthesizer, ConstraintSystem, SynthesisError, Variable};
 
-const N: usize = 2; // round number
-const SAMPLES: usize =  4095;//31070;//1048576//131070;//1048570;//131070;//16380;//16380;//16384
+const N: usize = 1; // round number
+const SAMPLES: usize =  16380;//31070;//1048576//131070;//1048570;//131070;//16380;//16380;//16384
 
 // Hash Rescue utilizes Sponge Construction
 // r, bitrate; c, capacity; M, state value, equal to r + c;
@@ -536,7 +536,7 @@ fn pow_with_constraint<F: PrimeField, CS: ConstraintSystem<F>, S: AsRef<[u64]>> 
 
 #[test]
 #[cfg(feature = "rescue")]
-fn rescue_groth_16() {
+fn rescue_groth16() {
 // We're going to use the Groth16 proving system.
 use scheme::groth16::{
     create_random_proof, generate_random_parameters, prepare_verifying_key, verify_proof,
